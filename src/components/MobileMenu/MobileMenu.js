@@ -90,9 +90,12 @@ const Content = styled(DialogContent)`
   display: flex;
   flex-direction: column;
   transform-origin: 100% 100%;
+  
+  @media (prefers-reduced-motion: no-preference) {
+      //animation: ${SlideIn} 500ms 300ms cubic-bezier(.31,.01,.68,1.23) both;
+    animation: ${SlideIn} 500ms 300ms linear both;
+  }
 
-  //animation: ${SlideIn} 500ms 300ms cubic-bezier(.31,.01,.68,1.23) both;
-  animation: ${SlideIn} 500ms 300ms linear both;
 `;
 
 const CloseButton = styled(UnstyledButton)`

@@ -153,11 +153,15 @@ const Flag = styled.div`
   font-weight: ${WEIGHTS.bold};
   color: var(--color-white);
   border-radius: 2px;
-  will-change: transform;
-  transform-origin: calc(100% - 4px) 100%;
-  
-  ${Wrapper}:hover & {
-    animation: ${Pulse} 1000ms both;
+
+  @media (prefers-reduced-motion: no-preference) {
+      will-change: transform;
+      transform-origin: calc(100% - 4px) 100%;
+  }
+    ${Wrapper}:hover & {
+      @media (prefers-reduced-motion: no-preference) {
+          animation: ${Pulse} 1000ms both;
+      }
   }
 `;
 
