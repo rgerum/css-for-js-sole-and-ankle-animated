@@ -114,16 +114,75 @@ const Filler = styled.div`
   }
 `;
 
-const NavLink = styled.a`
+const NavLink = ({ children, ...delegated}) => {
+  return <NavLinkComponent {...delegated}><NavDouble1>{children}</NavDouble1><NavDouble>{children}</NavDouble></NavLinkComponent>;
+}
+
+const NavLinkComponent = styled.a`
   font-size: 1.125rem;
   text-transform: uppercase;
   text-decoration: none;
   color: var(--color-gray-900);
   font-weight: ${WEIGHTS.medium};
-
+  padding-top: 3px;
+  height: calc(3px + 1.5rem + 3px);
+  overflow: hidden;
+  position: relative;
+  
   &:first-of-type {
     color: var(--color-secondary);
   }
+  
+  &:after {
+    content: '';
+    display: block;
+    width: 30%;
+    height: 3px;
+    background-color: var(--color-secondary);
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    transform: scale(0);
+    transform-origin: 0% 50%;
+    transition: transform 500ms ease-in-out;
+  }
+  &:hover:after {
+    transform: scale(1);
+    transition: transform 300ms 200ms ease-in-out;
+  }
+
+  &:before {
+    content: '';
+    display: block;
+    width: 30%;
+    height: 3px;
+    background-color: var(--color-secondary);
+    position: absolute;
+    right: 0;
+    top: 0;
+    transform: scale(0);
+    transform-origin: 100% 50%;
+    transition: transform 500ms ease-in-out;
+  }
+  &:hover:before {
+    transform: scale(1);
+    transition: transform 300ms 200ms ease-in-out;
+  }
 `;
+
+const NavDouble1 = styled.span`
+  display: block;
+  transition: transform 500ms 300ms ease-in-out;
+
+  ${NavLinkComponent}:hover & {
+    transform: translateY(-100%);
+    transition: transform 300ms ease-in-out;
+  }
+`
+
+const NavDouble = styled(NavDouble1)`
+  font-weight: 700;
+  pointer-events: none;
+`
 
 export default Header;
