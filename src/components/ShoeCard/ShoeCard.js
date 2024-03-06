@@ -4,6 +4,7 @@ import styled from 'styled-components/macro';
 import { WEIGHTS } from '../../constants';
 import { formatPrice, pluralize, isNewShoe } from '../../utils';
 import Spacer from '../Spacer';
+import {keyframes} from "styled-components";
 
 const ShoeCard = ({
   slug,
@@ -36,11 +37,11 @@ const ShoeCard = ({
       <Wrapper>
         <ImageWrapper>
           <Image alt="" src={imageSrc} />
+        </ImageWrapper>
           {variant === 'on-sale' && <SaleFlag>Sale</SaleFlag>}
           {variant === 'new-release' && (
             <NewFlag>Just released!</NewFlag>
           )}
-        </ImageWrapper>
         <Spacer size={12} />
         <Row>
           <Name>{name}</Name>
@@ -73,15 +74,28 @@ const Link = styled.a`
   color: inherit;
 `;
 
-const Wrapper = styled.article``;
+const Wrapper = styled.article`
+    position: relative
+`;
 
 const ImageWrapper = styled.div`
   position: relative;
+  overflow: hidden;
+  border-radius: 16px 16px 4px 4px;
 `;
 
 const Image = styled.img`
+  display: block;
   width: 100%;
-  border-radius: 16px 16px 4px 4px;
+  transform-origin: 50% 90%;
+  transition: transform 500ms 250ms ease-in-out, filter 500ms ease-in-out;
+  filter: brightness(100%);
+  
+  ${Wrapper}:hover & {
+    transform: scale(1.1);
+    transition: transform 200ms ease-in-out, filter 200ms 100ms ease-in-out;;
+    filter: brightness(85%);
+  }
 `;
 
 const Row = styled.div`
@@ -109,6 +123,24 @@ const SalePrice = styled.span`
   color: var(--color-primary);
 `;
 
+const Pulse = keyframes`
+  0% {
+    transform: rotate(0);
+  }
+  25% {
+    transform: rotate(10deg);
+  }
+  50% {
+    transform: rotate(0deg);
+  }
+  75% {
+    transform: rotate(5deg);
+  }
+  100% {
+    transform: rotate(0);
+  }
+`
+
 const Flag = styled.div`
   position: absolute;
   top: 12px;
@@ -121,6 +153,12 @@ const Flag = styled.div`
   font-weight: ${WEIGHTS.bold};
   color: var(--color-white);
   border-radius: 2px;
+  will-change: transform;
+  transform-origin: calc(100% - 4px) 100%;
+  
+  ${Wrapper}:hover & {
+    animation: ${Pulse} 1000ms both;
+  }
 `;
 
 const SaleFlag = styled(Flag)`
