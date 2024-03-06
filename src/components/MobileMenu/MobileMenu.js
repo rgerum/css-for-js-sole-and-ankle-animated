@@ -8,10 +8,11 @@ import { QUERIES, WEIGHTS } from '../../constants';
 import UnstyledButton from '../UnstyledButton';
 import Icon from '../Icon';
 import VisuallyHidden from '../VisuallyHidden';
+import {keyframes} from "styled-components";
 
 const MobileMenu = ({ isOpen, onDismiss }) => {
   return (
-    <Overlay isOpen={isOpen} onDismiss={onDismiss}>
+    <Overlay data-open={isOpen} isOpen={isOpen} onDismiss={onDismiss}>
       <Content aria-label="Menu">
         <CloseButton onClick={onDismiss}>
           <Icon id="close" />
@@ -19,12 +20,12 @@ const MobileMenu = ({ isOpen, onDismiss }) => {
         </CloseButton>
         <Filler />
         <Nav>
-          <NavLink href="/sale">Sale</NavLink>
-          <NavLink href="/new">New&nbsp;Releases</NavLink>
-          <NavLink href="/men">Men</NavLink>
-          <NavLink href="/women">Women</NavLink>
-          <NavLink href="/kids">Kids</NavLink>
-          <NavLink href="/collections">Collections</NavLink>
+          <NavLink style={{"--delay": "0"}} href="/sale">Sale</NavLink>
+          <NavLink style={{"--delay": "1"}} href="/new">New&nbsp;Releases</NavLink>
+          <NavLink style={{"--delay": "2"}} href="/men">Men</NavLink>
+          <NavLink style={{"--delay": "3"}} href="/women">Women</NavLink>
+          <NavLink style={{"--delay": "4"}} href="/kids">Kids</NavLink>
+          <NavLink style={{"--delay": "5"}} href="/collections">Collections</NavLink>
         </Nav>
         <Footer>
           <SubLink href="/terms">Terms and Conditions</SubLink>
@@ -36,6 +37,37 @@ const MobileMenu = ({ isOpen, onDismiss }) => {
   );
 };
 
+const FadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
+
+const FadeIn2 = keyframes`
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  30% {
+    transform: translateX(0px);
+  }
+  to {
+    opacity: 1;
+  }
+`;
+
+const SlideIn = keyframes`
+  from {
+    transform: rotateY(-90deg);//translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+`;
+
 const Overlay = styled(DialogOverlay)`
   position: fixed;
   top: 0;
@@ -43,8 +75,11 @@ const Overlay = styled(DialogOverlay)`
   right: 0;
   bottom: 0;
   background: var(--color-backdrop);
+  opacity: 0;
   display: flex;
   justify-content: flex-end;
+  animation: ${FadeIn} 500ms ease-in-out forwards;
+  perspective: 1000px;
 `;
 
 const Content = styled(DialogContent)`
@@ -54,6 +89,10 @@ const Content = styled(DialogContent)`
   padding: 24px 32px;
   display: flex;
   flex-direction: column;
+  transform-origin: 100% 100%;
+
+  //animation: ${SlideIn} 500ms 300ms cubic-bezier(.31,.01,.68,1.23) both;
+  animation: ${SlideIn} 500ms 300ms linear both;
 `;
 
 const CloseButton = styled(UnstyledButton)`
@@ -79,6 +118,8 @@ const NavLink = styled.a`
   &:first-of-type {
     color: var(--color-secondary);
   }
+
+  animation: ${FadeIn2} 500ms calc(400ms + var(--delay) * 100ms) linear both;
 `;
 
 const Filler = styled.div`
@@ -90,6 +131,8 @@ const Footer = styled.footer`
   flex-direction: column;
   gap: 14px;
   justify-content: flex-end;
+
+  animation: ${FadeIn} 500ms 500ms ease-in-out both;
 `;
 
 const SubLink = styled.a`
